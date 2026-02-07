@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="#DBC7C3"
+    android:gravity="center"
+    tools:context=".Book_Add">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Add Book Name"
+        android:id="@+id/bookNameEditTextId"
+        android:textSize="20sp"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Add Author Name"
+        android:id="@+id/authorNameEditTextId"
+        android:textSize="20sp"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Add ISBN Number"
+        android:id="@+id/isbnNumberEditTextId"
+        android:textSize="20sp"
+        />
+
+    <ImageView
+        android:id="@+id/selectImageButtonId"
+        android:layout_width="125dp"
+        android:layout_height="122dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_launcher_background" />"
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Submit"
+        android:id="@+id/submitButtonId"
+        android:textSize="20sp"
+        android:background="@drawable/login_button"
+        app:backgroundTint="@null"
+        />
+
+
+
+
+
+</LinearLayout>
