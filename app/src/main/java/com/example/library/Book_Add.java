@@ -61,7 +61,7 @@ public class Book_Add extends AppCompatActivity implements View.OnClickListener 
 
     public String bitmapToString(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos); // কোয়ালিটি ৭০% যাতে আপলোড ফাস্ট হয়
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
         byte[] imageBytes = baos.toByteArray();
         return Base64.encodeToString(imageBytes, Base64.DEFAULT);
     }
@@ -75,7 +75,7 @@ public class Book_Add extends AppCompatActivity implements View.OnClickListener 
             String isbn = isbnNumberEditText.getText().toString();
 
             if (bitmap != null && !name.isEmpty()) {
-                // ৩. এখানে ভলি মেথডটি কল হবে
+
                 uploadBookToServer(name, author, isbn);
             } else {
                 Toast.makeText(this, "সব তথ্য এবং ছবি দিন", Toast.LENGTH_SHORT).show();
@@ -87,8 +87,8 @@ public class Book_Add extends AppCompatActivity implements View.OnClickListener 
         else if (view.getId() == R.id.selectImageButtonId){
 
             Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*"); // শুধু ইমেজ ফাইল দেখাবে
-            startActivityForResult(intent, 100); // ১০০ হলো একটি রিকোয়েস্ট কোড
+            intent.setType("image/*");
+            startActivityForResult(intent, 100);
 
 
         }
@@ -100,9 +100,9 @@ public class Book_Add extends AppCompatActivity implements View.OnClickListener 
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
             Uri imageUri = data.getData();
             try {
-                // সিলেক্ট করা ছবিটিকে Bitmap এ রূপান্তর
+
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-                imageView.setImageBitmap(bitmap); // স্ক্রিনে প্রিভিউ দেখাবে
+                imageView.setImageBitmap(bitmap);
             } catch (IOException e) { e.printStackTrace(); }
         }
     }
@@ -110,7 +110,7 @@ public class Book_Add extends AppCompatActivity implements View.OnClickListener 
     private void uploadBookToServer(String name, String author, String isbn) {
         String url = "http://192.168.1.196/library_system/add_book.php";
 
-        // ছবিটিকে String বানিয়ে ফেলা
+
         final String imageString = bitmapToString(bitmap);
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
@@ -130,7 +130,7 @@ public class Book_Add extends AppCompatActivity implements View.OnClickListener 
                 params.put("book_name", name);
                 params.put("author_name", author);
                 params.put("isbn", isbn);
-                params.put("image", imageString); // ইমেজ ডাটা পাঠানো
+                params.put("image", imageString);
                 return params;
             }
         };

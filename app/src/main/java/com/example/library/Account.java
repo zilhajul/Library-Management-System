@@ -2,7 +2,6 @@ package com.example.library;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,7 +26,7 @@ public class Account extends AppCompatActivity {
 
     private List<Book> bookList;
     private RecyclerView rvrecyclerView;
-    private BookAdapterLibrarian adapter;
+    private BookAdapter adapter;
     String studentId;
     String role;
 
@@ -58,22 +57,22 @@ public class Account extends AppCompatActivity {
         rvrecyclerView.setAdapter(adapter);
 
     }
-    // MyBorrowedBooksActivity-তে
-    private void loadBorrowedBooks(String studentId) {
-        bookList.clear(); // Puron data remove korbe
+
+    void loadBorrowedBooks(String studentId) {
+        bookList.clear();
 
         String url = "http://192.168.1.196/library_system/get_borrowed_books.php?student_id=" + studentId;
 
         StringRequest request = new StringRequest(Request.Method.GET, url,
                 response -> {
                     try {
-                        Log.d("SERVER_RESPONSE", response); // Logcat-e check korun data ashche kina
+                        Log.d("SERVER_RESPONSE", response);
                         JSONArray array = new JSONArray(response);
 
                         for (int i = 0; i < array.length(); i++) {
                             JSONObject obj = array.getJSONObject(i);
 
-                            // Nichey deya serial-ti apnar Book.java constructor-er sathe miliye nin
+
                             bookList.add(new Book(
                                     obj.getString("id"),
                                     obj.getString("book_name"),
@@ -84,9 +83,9 @@ public class Account extends AppCompatActivity {
                             ));
                         }
 
-                        // Adapter initialize ebong set kora
+
                         if (adapter == null) {
-                            adapter = new BookAdapterLibrarian(this, bookList, role, studentId);
+                            adapter = new BookAdapter(this, bookList, role, studentId);
                             rvrecyclerView.setAdapter(adapter);
                         } else {
                             adapter.notifyDataSetChanged();

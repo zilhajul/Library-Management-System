@@ -26,17 +26,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BookAdapterLibrarian extends RecyclerView.Adapter<BookAdapterLibrarian.BookViewHolder> implements Filterable {
+public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> implements Filterable {
 
     private Context context;
     private List<Book> bookList;
     private String userRole;
     private String email;
+    Account account;
 
 
 
-    // কনস্ট্রাক্টর
-    public BookAdapterLibrarian(Context context, List<Book> bookList, String userRole, String email) {
+    // Constractor
+    public BookAdapter(Context context, List<Book> bookList, String userRole, String email) {
         this.context = context;
         this.bookList = bookList;
         this.userRole = userRole;
@@ -99,10 +100,10 @@ private Filter bookFilter = new Filter() {
         return new BookViewHolder(view);
     }
 
-    // --- এইখানে মেথডটি বসবে ---
+
     @Override
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
-        // ১. লিস্ট থেকে বর্তমান পজিশনের বইটিকে নেওয়া
+        //Taking the position from the list
         Book book = bookList.get(position);
 
 
@@ -115,37 +116,40 @@ private Filter bookFilter = new Filter() {
 
 
         if (userRole.equalsIgnoreCase("Librarian")) {
-            // অ্যাডমিন হলে ডিলিট এবং ইস্যু দেখবে, কিন্তু বরো (Borrow) বাটন হাইড থাকবে
+            // For librarian only show delete and issue buttons
+
             holder.btnDelete.setVisibility(View.VISIBLE);
             holder.btnIssue.setVisibility(View.VISIBLE);
             holder.btnBorrow.setVisibility(View.GONE);
             holder.btnReturn.setVisibility(View.GONE);
         } else {
-            // স্টুডেন্ট হলে ডিলিট এবং ইস্যু দেখবে না, শুধু বরো এবং ডিটেইলস দেখবে
+            // For student only show borrow and return buttons
+
             holder.btnDelete.setVisibility(View.GONE);
             holder.btnIssue.setVisibility(View.GONE);
             holder.btnBorrow.setVisibility(View.VISIBLE);
             holder.btnReturn.setVisibility(View.VISIBLE);
         }
 
-        // ২. টেক্সট ডাটা সেট করা
+        // Set name and author from database
         holder.name.setText(book.getName());
         holder.author.setText(book.getAuthor());
 
-        // ৩. ছবির লিঙ্ক তৈরি করা
+        // Getting image url
         String imageUrl = "http://192.168.1.196/library_system/uploads/" + book.getImagePath();
 
-        // ৪. Glide দিয়ে ছবি সেট করা
+        // Set image with Glide
         Glide.with(context)
                 .load(imageUrl)
-                .placeholder(R.drawable.loading_icon) // লোড হওয়ার সময় যা দেখাবে
+                .placeholder(R.drawable.loading_icon) // For loading time
                 .error(R.drawable.error_icon)
                 .into(holder.image);
 
         Log.d("IMAGE_URL", "Full Path: " + imageUrl);
 
         holder.btnDelete.setOnClickListener(v -> {
-            // ইউজারের কাছে কনফার্মেশন চাওয়া
+            // It will show a dialog box to confirm the deletion
+
             new AlertDialog.Builder(context)
                     .setTitle("Delete Book")
                     .setMessage("Are you sure you want to delete this book?")
@@ -158,6 +162,8 @@ private Filter bookFilter = new Filter() {
         });
 
         holder.btnBorrow.setOnClickListener(v -> {
+            // It show a dialog box to confirm the borrowing
+
             new AlertDialog.Builder(context)
                     .setTitle("Borrow Book")
                     .setMessage("Are you sure you want to borrow '" + book.getName() + "'?")
@@ -170,13 +176,21 @@ private Filter bookFilter = new Filter() {
                     .show();
         });
 
+        //borrow button will be hide if book is already borrowed
+
         if (book.getBorrowDate() != null && !book.getBorrowDate().isEmpty()) {
             holder.btnBorrow.setVisibility(View.GONE);
         }
 
+        holder.btnReturn.setOnClickListener(v -> {
+            String studentId = email;
+            returnBook(studentId, book.getId(), position);
+        });
+
 
 
     }
+
 
 
     @Override
@@ -185,7 +199,7 @@ private Filter bookFilter = new Filter() {
     }
 
 
-    // ViewHolder ক্লাস (যা ID গুলো ধরে রাখে)
+    // ViewHolder class (it collect ID)
     public static class BookViewHolder extends RecyclerView.ViewHolder {
         TextView name, author;
         ImageView image;
@@ -198,7 +212,7 @@ private Filter bookFilter = new Filter() {
 
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.bookName); // item_book.xml এর ID
+            name = itemView.findViewById(R.id.bookName);
             author = itemView.findViewById(R.id.authorName);
             image = itemView.findViewById(R.id.bookImage);
             tvBorrowDate = itemView.findViewById(R.id.tvBorrowDate);
@@ -211,6 +225,8 @@ private Filter bookFilter = new Filter() {
     }
 
     private void deleteBookFromServer(String id, int position) {
+        //This methode will delete the book from the server
+
         String url = "http://192.168.1.196/library_system/delete_book.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
@@ -240,6 +256,8 @@ private Filter bookFilter = new Filter() {
     }
 
     private void borrowBookFromServer(String studentId, String bookId) {
+        //This methode will borrow the book from the server
+
         String url = "http://192.168.1.196/library_system/borrow_book.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
@@ -247,7 +265,7 @@ private Filter bookFilter = new Filter() {
                     if (response.trim().equals("success")) {
                         Toast.makeText(context, "Book Borrowed Successfully!", Toast.LENGTH_SHORT).show();
                     } else if (response.trim().equals("already_borrowed")) {
-                        // ইউজারকে সতর্ক করা
+
                         Toast.makeText(context, "You have already borrowed this book!", Toast.LENGTH_LONG).show();
                     }else {
                         Toast.makeText(context, " Error!", Toast.LENGTH_SHORT).show();
@@ -264,4 +282,35 @@ private Filter bookFilter = new Filter() {
         };
         Volley.newRequestQueue(context).add(request);
     }
+
+    private void returnBook(String studentId, String bookId, int position) {
+
+        //This method perform the delete query on borrowed book table from the server
+
+        String url = "http://192.168.1.196/library_system/return_book.php";
+
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                response -> {
+                    if (response.trim().equals("success")) {
+                        Toast.makeText(context, "Book Returned Successfully!", Toast.LENGTH_SHORT).show();
+
+                        bookList.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, bookList.size());
+                    } else {
+                        Toast.makeText(context, "Failed: " + response, Toast.LENGTH_SHORT).show();
+                    }
+                },
+                error -> Toast.makeText(context, "Network Error!", Toast.LENGTH_SHORT).show()) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("student_id", studentId); //
+                params.put("book_id", bookId);
+                return params;
+            }
+        };
+        Volley.newRequestQueue(context).add(request);
+    }
+
 }

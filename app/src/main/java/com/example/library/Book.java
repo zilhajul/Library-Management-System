@@ -8,7 +8,7 @@ public class Book {
         private String imagePath;
         private String borrowDate;
 
-        // কনস্ট্রাক্টর
+
         public Book(String id, String name, String author, String isbn, String imagePath, String borrowDate) {
             this.id = id;
             this.name = name;
@@ -19,7 +19,7 @@ public class Book {
 
         }
 
-        // গেটার মেথডগুলো (এগুলো অ্যাডাপ্টারে লাগবে)
+
         public String getName() { return name; }
         public String getAuthor() { return author; }
         public String getIsbn() { return isbn; }

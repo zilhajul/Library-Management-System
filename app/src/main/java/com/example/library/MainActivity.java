@@ -101,31 +101,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void loginUser(String email, String password, String value) {
-        String url = "http://192.168.1.196/library_system/login.php"; // আপনার IP ব্যবহার করুন
+        String url = "http://192.168.1.196/library_system/login.php";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // সার্ভার থেকে "Login Success,admin" এমন রেসপন্স আসবে
+
                         if (response.contains("Login Success")) {
                             String[] parts = response.split(",");
-                            String role = parts[1]; // রোলটি আলাদা করা (admin বা student)
+                            String role = parts[1];
 
 
-                            // রোল অনুযায়ী আলাদা অ্যাক্টিভিটিতে পাঠানো
+
                             if (role.equals(value)) {
 
                                 if (role.equals("Librarian")){
-                                    // Admin Dashboard এ যাও
+
                                     Intent intent = new Intent(MainActivity.this, Librarian.class);
-                                    intent.putExtra("user_role", "Librarian"); // ডাটা এভাবে পাঠান
+                                    intent.putExtra("user_role", "Librarian");
                                     startActivity(intent);
                                 }else {
-                                    // Student Home এ যাও
+
                                     Intent intent = new Intent(MainActivity.this, Student.class);
                                     intent.putExtra("user_role", "student");
-                                    intent.putExtra("email", email); // ডাটা এভাবে পাঠান
+                                    intent.putExtra("email", email);
                                     startActivity(intent);
                                 }
 
