@@ -31,7 +31,7 @@ import java.util.List;
 public class Student extends AppCompatActivity {
 
     RecyclerView recyclerViewStudent;
-    BookAdapterLibrarian adapter;
+    BookAdapter adapter;
     List<Book> bookList;
     String role;
     SwipeRefreshLayout swipeRefreshLayoutStudent;
@@ -67,7 +67,7 @@ public class Student extends AppCompatActivity {
         email = getIntent().getStringExtra("email");
 
 
-        // ২. সার্ভার থেকে ডাটা লোড করার মেথড কল করুন
+
         loadBooksFromServer();
        swipeRefreshLayoutStudent.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
            @Override
@@ -131,8 +131,8 @@ public class Student extends AppCompatActivity {
                             );
                             bookList.add(book);
                         }
-                        // লিস্টে ডাটা আসার পর অ্যাডাপ্টার সেট করা
-                        adapter = new BookAdapterLibrarian(this, bookList, role, email);
+
+                        adapter = new BookAdapter(this, bookList, role, email);
                         recyclerViewStudent.setAdapter(adapter);
 
                     } catch (JSONException e) { e.printStackTrace(); }
@@ -166,8 +166,8 @@ public class Student extends AppCompatActivity {
                             );
                             bookList.add(book);
                         }
-                        // লিস্টে ডাটা আসার পর অ্যাডাপ্টার সেট করা
-                        adapter = new BookAdapterLibrarian(this, bookList, role, email);
+
+                        adapter = new BookAdapter(this, bookList, role, email);
                         recyclerViewStudent.setAdapter(adapter);
 
                     } catch (JSONException e) {

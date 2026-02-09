@@ -30,7 +30,7 @@ public class Librarian extends AppCompatActivity implements View.OnClickListener
 
     private Button addBookButton, settingButton;
     RecyclerView recyclerView;
-    BookAdapterLibrarian adapter;
+    BookAdapter adapter;
     List<Book> bookList;
     String role;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -55,7 +55,7 @@ public class Librarian extends AppCompatActivity implements View.OnClickListener
 
         recyclerView = findViewById(R.id.recyclerView);
 
-        // ১. RecyclerView সেটআপ (লিস্ট আকারে দেখানোর জন্য)
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
@@ -65,8 +65,7 @@ public class Librarian extends AppCompatActivity implements View.OnClickListener
 
         role = getIntent().getStringExtra("user_role");
 
-        // ২. সার্ভার থেকে ডাটা লোড করার মেথড কল করুন
-        loadBooksFromServer();
+       loadBooksFromServer();
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -110,9 +109,8 @@ public class Librarian extends AppCompatActivity implements View.OnClickListener
                             );
                             bookList.add(book);
                         }
-                        // লিস্টে ডাটা আসার পর অ্যাডাপ্টার সেট করা
 
-                        adapter = new BookAdapterLibrarian(this, bookList, role, email);
+                        adapter = new BookAdapter(this, bookList, role, email);
                         recyclerView.setAdapter(adapter);
 
                     } catch (JSONException e) { e.printStackTrace(); }
@@ -148,7 +146,7 @@ public class Librarian extends AppCompatActivity implements View.OnClickListener
                             bookList.add(book);
                         }
                         // লিস্টে ডাটা আসার পর অ্যাডাপ্টার সেট করা
-                        adapter = new BookAdapterLibrarian(this, bookList, role, email);
+                        adapter = new BookAdapter(this, bookList, role, email);
                         recyclerView.setAdapter(adapter);
 
                     } catch (JSONException e) { e.printStackTrace(); }
