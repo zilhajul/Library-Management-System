@@ -3,8 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:title="Account"
-        android:id="@+id/profileId"
-        app:showAsAction="always"/>
+        android:id="@+id/action_popup_trigger"
+        android:icon="@drawable/user"
+        android:title="More"
+        app:showAsAction="always">
+
+        <menu>
+            <item
+                android:title="Profile"
+                android:id="@+id/profile"
+                app:showAsAction="never"/>
+
+            <item
+                android:title="My Borrowed Books"
+                android:id="@+id/borrowedBookId"
+                app:showAsAction="never"/>
+
+            <item
+                android:title="Setting"
+                android:id="@+id/settingId"
+                app:showAsAction="never"/>
+
+        </menu>
+
+    </item>
+
+
 
 </menu>

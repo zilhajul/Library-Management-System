@@ -110,6 +110,7 @@ private Filter bookFilter = new Filter() {
         if (book.getBorrowDate() != null && !book.getBorrowDate().isEmpty()) {
             holder.tvBorrowDate.setVisibility(View.VISIBLE);
             holder.tvBorrowDate.setText("Borrowed on: " + book.getBorrowDate());
+
         } else {
             holder.tvBorrowDate.setVisibility(View.GONE);
         }
@@ -128,7 +129,9 @@ private Filter bookFilter = new Filter() {
             holder.btnDelete.setVisibility(View.GONE);
             holder.btnIssue.setVisibility(View.GONE);
             holder.btnBorrow.setVisibility(View.VISIBLE);
-            holder.btnReturn.setVisibility(View.VISIBLE);
+            holder.btnReturn.setVisibility(View.GONE);
+
+
         }
 
         // Set name and author from database
@@ -154,7 +157,7 @@ private Filter bookFilter = new Filter() {
                     .setTitle("Delete Book")
                     .setMessage("Are you sure you want to delete this book?")
                     .setPositiveButton("Yes", (dialog, which) -> {
-                        // সার্ভার থেকে ডিলিট করার মেথড কল
+
                         deleteBookFromServer(book.getId(), position);
                     })
                     .setNegativeButton("No", null)
@@ -174,17 +177,22 @@ private Filter bookFilter = new Filter() {
                     })
                     .setNegativeButton("No", null)
                     .show();
+            holder.btnBorrow.setVisibility(View.GONE);
+            holder.btnReturn.setVisibility(View.VISIBLE);
         });
 
         //borrow button will be hide if book is already borrowed
 
         if (book.getBorrowDate() != null && !book.getBorrowDate().isEmpty()) {
             holder.btnBorrow.setVisibility(View.GONE);
+
         }
 
         holder.btnReturn.setOnClickListener(v -> {
             String studentId = email;
             returnBook(studentId, book.getId(), position);
+            holder.btnBorrow.setVisibility(View.VISIBLE);
+            holder.btnReturn.setVisibility(View.GONE);
         });
 
 
@@ -294,8 +302,8 @@ private Filter bookFilter = new Filter() {
                     if (response.trim().equals("success")) {
                         Toast.makeText(context, "Book Returned Successfully!", Toast.LENGTH_SHORT).show();
 
-                        bookList.remove(position);
-                        notifyItemRemoved(position);
+
+
                         notifyItemRangeChanged(position, bookList.size());
                     } else {
                         Toast.makeText(context, "Failed: " + response, Toast.LENGTH_SHORT).show();
@@ -311,6 +319,7 @@ private Filter bookFilter = new Filter() {
             }
         };
         Volley.newRequestQueue(context).add(request);
+
     }
 
 }

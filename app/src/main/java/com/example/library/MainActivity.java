@@ -1,5 +1,6 @@
 package com.example.library;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -30,13 +31,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private EditText userNameEditText;
     private EditText passwordEditText;
-    private Button loginButton, createAccountButton;
+    private Button loginButton;
+    private TextView createAccountButton;
     private Spinner spinner;
     private TextView forgotPassword;
     private FirebaseAuth mAuth;
 
     String[] roles ;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

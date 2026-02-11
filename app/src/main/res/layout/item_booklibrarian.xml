@@ -26,8 +26,8 @@
                 android:src="@drawable/ic_launcher_background" />
 
             <LinearLayout
-                android:layout_width="151dp"
-                android:layout_height="97dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:orientation="vertical">
 
@@ -61,6 +61,26 @@
                     android:textSize="14sp"
                     android:visibility="visible" />
 
+                <Button
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/borrowButton"
+                    android:layout_gravity="end"
+                    android:text="Borrow"
+                    android:background="@drawable/login_button"
+                    android:visibility="gone"
+                    app:backgroundTint="@null"/>
+                <Button
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/returnButton"
+                    android:layout_gravity="end"
+                    android:textColor="@color/bg_dark"
+                    android:text="Return"
+                    android:background="@drawable/custom_button"
+                    android:visibility="gone"
+                    app:backgroundTint="@null"/>
+
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -88,26 +108,7 @@
                     android:background="#F60909"
                     android:visibility="gone"
                     app:backgroundTint="@null"/>
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/borrowButton"
-                    android:layout_gravity="end"
-                    android:textSize="8dp"
-                    android:text="Borrow"
-                    android:background="#099BF6"
-                    android:visibility="gone"
-                    app:backgroundTint="@null"/>
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/returnButton"
-                    android:layout_gravity="end"
-                    android:textSize="8dp"
-                    android:text="Return"
-                    android:background="#09F678"
-                    android:visibility="gone"
-                    app:backgroundTint="@null"/>
+
 
 
             </LinearLayout>

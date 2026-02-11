@@ -80,7 +80,7 @@ public class Student extends AppCompatActivity {
            @Override
            public boolean onMenuItemClick(MenuItem item) {
 
-               if (item.getItemId() == R.id.profileId){
+               if (item.getItemId() == R.id.borrowedBookId){
                 Intent intent = new Intent(Student.this, Account.class);
                 intent.putExtra("email", email);
                 intent.putExtra("user_role", role);
